@@ -725,11 +725,11 @@
 			]
 		},
 		"contracts/libs/BEP20.sol": {
-			"keccak256": "0x78c5f7b72e33957614cea050331d3946ac0342348052ba2a0c6514e25cfe90a4",
+			"keccak256": "0x137b55fd7b4e152b5b55f62514f230208e30f6f34adc752958ca1d9875ae6190",
 			"license": "MIT",
 			"urls": [
-				"bzz-raw://d381b52bd8c5fba783d98ee6d07c95abcda1ea2d9f6fe48fa1862115a92f7bd9",
-				"dweb:/ipfs/QmNhHdBFy4UR5p8mPm7eMwYCKw8sMtN6Dqrg53RMxiQHW5"
+				"bzz-raw://69abd35ee618ddd778d279fcc025c6779c620d960918d6d31e91b52d6cf7a061",
+				"dweb:/ipfs/QmaKu81msKttGgFdJz8eWi6SGVxZ2wgCrJCaoLRnvvvdZh"
 			]
 		},
 		"contracts/libs/IBEP20.sol": {
