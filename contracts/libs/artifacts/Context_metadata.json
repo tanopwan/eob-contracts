@@ -1,0 +1,44 @@
+{
+	"compiler": {
+		"version": "0.6.12+commit.27d51765"
+	},
+	"language": "Solidity",
+	"output": {
+		"abi": [],
+		"devdoc": {
+			"kind": "dev",
+			"methods": {},
+			"version": 1
+		},
+		"userdoc": {
+			"kind": "user",
+			"methods": {},
+			"version": 1
+		}
+	},
+	"settings": {
+		"compilationTarget": {
+			"contracts/libs/DRNG.sol": "Context"
+		},
+		"evmVersion": "istanbul",
+		"libraries": {},
+		"metadata": {
+			"bytecodeHash": "ipfs"
+		},
+		"optimizer": {
+			"enabled": false,
+			"runs": 200
+		},
+		"remappings": []
+	},
+	"sources": {
+		"contracts/libs/DRNG.sol": {
+			"keccak256": "0x053d066e4cf8056bbac292b696fb9b35abd9745f27afa6dbf168cc5453e19590",
+			"urls": [
+				"bzz-raw://0a41e08e2544c0c04fac6a6dfdf1356965f5e98633c1ad27003315322b0b0644",
+				"dweb:/ipfs/QmRHY8F2ZcfPZXQMo1pPyWULezSmgknVMGGc6vNWRTQuF3"
+			]
+		}
+	},
+	"version": 1
+}
