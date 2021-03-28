@@ -9,6 +9,7 @@ import "@openzeppelin/contracts/access/Ownable.sol";
 import "@openzeppelin/contracts/utils/ReentrancyGuard.sol";
 
 import "./EOBToken.sol";
+import "./EOBNftToken.sol";
 
 // MasterChef is the master of EOB. He can make EOB and he is a fair guy.
 //
@@ -25,6 +26,7 @@ contract MasterChefV2 is Ownable, ReentrancyGuard {
     struct UserInfo {
         uint256 amount;         // How many LP tokens the user has provided.
         uint256 rewardDebt;     // Reward debt. See explanation below.
+        uint256 lastTimestamp;  // Last token added timestamp
         //
         // We do some fancy math here. Basically, any point in time, the amount of EOBs
         // entitled to a user but is pending to be distributed is:
@@ -45,10 +47,13 @@ contract MasterChefV2 is Ownable, ReentrancyGuard {
         uint256 lastRewardBlock;  // Last block number that EOBs distribution occurs.
         uint256 accEOBPerShare;   // Accumulated EOBs per share, times 1e12. See below.
         uint16 depositFeeBP;      // Deposit fee in basis points
+        uint256 countryId;        // Country Id for NFT reward
     }
 
     // The EOB TOKEN!
     EOBToken public EOB;
+    // The NFT Token on EOB ecosystem!
+    EOBNftToken public nft;
     // Dev address.
     address public devaddr;
     // EOB tokens created per block.
@@ -76,12 +81,14 @@ contract MasterChefV2 is Ownable, ReentrancyGuard {
 
     constructor(
         EOBToken _EOB,
+        EOBNftToken _nft,
         address _devaddr,
         address _feeAddress,
         uint256 _EOBPerBlock,
         uint256 _startBlock
     ) public {
         EOB = _EOB;
+        nft = _nft;
         devaddr = _devaddr;
         feeAddress = _feeAddress;
         EOBPerBlock = _EOBPerBlock;
@@ -99,7 +106,7 @@ contract MasterChefV2 is Ownable, ReentrancyGuard {
     }
 
     // Add a new lp to the pool. Can only be called by the owner.
-    function add(uint256 _allocPoint, IBEP20 _lpToken, uint16 _depositFeeBP, bool _withUpdate) public onlyOwner nonDuplicated(_lpToken) {
+    function add(uint256 _allocPoint, IBEP20 _lpToken, uint16 _depositFeeBP, uint256 _countryId, bool _withUpdate) public onlyOwner nonDuplicated(_lpToken) {
         require(_depositFeeBP <= 10000, "add: invalid deposit fee basis points");
         if (_withUpdate) {
             massUpdatePools();
@@ -112,7 +119,8 @@ contract MasterChefV2 is Ownable, ReentrancyGuard {
         allocPoint : _allocPoint,
         lastRewardBlock : lastRewardBlock,
         accEOBPerShare : 0,
-        depositFeeBP : _depositFeeBP
+        depositFeeBP : _depositFeeBP,
+        countryId: _countryId
         }));
     }
 
@@ -195,6 +203,7 @@ contract MasterChefV2 is Ownable, ReentrancyGuard {
             }
         }
         user.rewardDebt = user.amount.mul(pool.accEOBPerShare).div(1e12);
+        user.lastTimestamp = block.timestamp;
         emit Deposit(msg.sender, _pid, _amount);
     }
 
@@ -213,6 +222,29 @@ contract MasterChefV2 is Ownable, ReentrancyGuard {
             pool.lpToken.safeTransfer(address(msg.sender), _amount);
         }
         user.rewardDebt = user.amount.mul(pool.accEOBPerShare).div(1e12);
+        user.lastTimestamp = block.timestamp;
+        emit Withdraw(msg.sender, _pid, _amount);
+    }
+    
+    // Withdraw NFT and burn gov token from MasterChef.
+    function withdrawNft(uint256 _pid, uint256 _amount) public nonReentrant {
+        PoolInfo storage pool = poolInfo[_pid];
+        UserInfo storage user = userInfo[_pid][msg.sender];
+        require(user.amount >= _amount, "withdraw: not good");
+        require(pool.countryId != 0, "Cannot withdraw NFT");
+        updatePool(_pid);
+        uint256 pending = user.amount.mul(pool.accEOBPerShare).div(1e12).sub(user.rewardDebt);
+        if (pending > 0) {
+            //safeEOBTransfer(msg.sender, pending);
+            safeEOBTransfer(0x000000000000000000000000000000000000dEaD, pending);
+            nft.mintUserSNftBox(msg.sender, pool.countryId, pending / 1e22);
+        }
+        if (_amount > 0) {
+            user.amount = user.amount.sub(_amount);
+            pool.lpToken.safeTransfer(address(0x000000000000000000000000000000000000dEaD), _amount);
+        }
+        user.rewardDebt = user.amount.mul(pool.accEOBPerShare).div(1e12);
+        user.lastTimestamp = block.timestamp;
         emit Withdraw(msg.sender, _pid, _amount);
     }
 

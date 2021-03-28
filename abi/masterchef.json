@@ -7,6 +7,11 @@
 				"type": "address"
 			},
 			{
+				"internalType": "contract EOBNftToken",
+				"name": "_nft",
+				"type": "address"
+			},
+			{
 				"internalType": "address",
 				"name": "_devaddr",
 				"type": "address"
@@ -238,6 +243,11 @@
 				"type": "uint16"
 			},
 			{
+				"internalType": "uint256",
+				"name": "_countryId",
+				"type": "uint256"
+			},
+			{
 				"internalType": "bool",
 				"name": "_withUpdate",
 				"type": "bool"
@@ -351,6 +361,19 @@
 	},
 	{
 		"inputs": [],
+		"name": "nft",
+		"outputs": [
+			{
+				"internalType": "contract EOBNftToken",
+				"name": "",
+				"type": "address"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [],
 		"name": "owner",
 		"outputs": [
 			{
@@ -439,6 +462,11 @@
 				"internalType": "uint16",
 				"name": "depositFeeBP",
 				"type": "uint16"
+			},
+			{
+				"internalType": "uint256",
+				"name": "countryId",
+				"type": "uint256"
 			}
 		],
 		"stateMutability": "view",
@@ -594,6 +622,11 @@
 				"internalType": "uint256",
 				"name": "rewardDebt",
 				"type": "uint256"
+			},
+			{
+				"internalType": "uint256",
+				"name": "lastTimestamp",
+				"type": "uint256"
 			}
 		],
 		"stateMutability": "view",
@@ -613,6 +646,24 @@
 			}
 		],
 		"name": "withdraw",
+		"outputs": [],
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "uint256",
+				"name": "_pid",
+				"type": "uint256"
+			},
+			{
+				"internalType": "uint256",
+				"name": "_amount",
+				"type": "uint256"
+			}
+		],
+		"name": "withdrawNft",
 		"outputs": [],
 		"stateMutability": "nonpayable",
 		"type": "function"

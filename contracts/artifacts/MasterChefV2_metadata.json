@@ -13,6 +13,11 @@
 						"type": "address"
 					},
 					{
+						"internalType": "contract EOBNftToken",
+						"name": "_nft",
+						"type": "address"
+					},
+					{
 						"internalType": "address",
 						"name": "_devaddr",
 						"type": "address"
@@ -244,6 +249,11 @@
 						"type": "uint16"
 					},
 					{
+						"internalType": "uint256",
+						"name": "_countryId",
+						"type": "uint256"
+					},
+					{
 						"internalType": "bool",
 						"name": "_withUpdate",
 						"type": "bool"
@@ -357,6 +367,19 @@
 			},
 			{
 				"inputs": [],
+				"name": "nft",
+				"outputs": [
+					{
+						"internalType": "contract EOBNftToken",
+						"name": "",
+						"type": "address"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"inputs": [],
 				"name": "owner",
 				"outputs": [
 					{
@@ -445,6 +468,11 @@
 						"internalType": "uint16",
 						"name": "depositFeeBP",
 						"type": "uint16"
+					},
+					{
+						"internalType": "uint256",
+						"name": "countryId",
+						"type": "uint256"
 					}
 				],
 				"stateMutability": "view",
@@ -600,6 +628,11 @@
 						"internalType": "uint256",
 						"name": "rewardDebt",
 						"type": "uint256"
+					},
+					{
+						"internalType": "uint256",
+						"name": "lastTimestamp",
+						"type": "uint256"
 					}
 				],
 				"stateMutability": "view",
@@ -619,6 +652,24 @@
 					}
 				],
 				"name": "withdraw",
+				"outputs": [],
+				"stateMutability": "nonpayable",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "uint256",
+						"name": "_pid",
+						"type": "uint256"
+					},
+					{
+						"internalType": "uint256",
+						"name": "_amount",
+						"type": "uint256"
+					}
+				],
+				"name": "withdrawNft",
 				"outputs": [],
 				"stateMutability": "nonpayable",
 				"type": "function"
@@ -655,7 +706,7 @@
 			"bytecodeHash": "ipfs"
 		},
 		"optimizer": {
-			"enabled": true,
+			"enabled": false,
 			"runs": 200
 		},
 		"remappings": []
@@ -677,12 +728,60 @@
 				"dweb:/ipfs/QmRGM4F2PcGVF85aTfaA9YBhCHHDqrMhRjyp6fGeBTtirb"
 			]
 		},
+		"@openzeppelin/contracts/introspection/ERC165.sol": {
+			"keccak256": "0x24141d2f6b98d4cb77a8936eae8cbaad2e261d9062bdc08036096f4550092501",
+			"license": "MIT",
+			"urls": [
+				"bzz-raw://b710eb003944777135f027500a5a57b479fe857849f5f467c1ef9687401e3c95",
+				"dweb:/ipfs/QmcELzi6KRzAs3DXwxdsoKWRJ13KSeipKQsJgD3unctdZM"
+			]
+		},
+		"@openzeppelin/contracts/introspection/IERC165.sol": {
+			"keccak256": "0xf70bc25d981e4ec9673a995ad2995d5d493ea188d3d8f388bba9c227ce09fb82",
+			"license": "MIT",
+			"urls": [
+				"bzz-raw://bd970f51e3a77790c2f02b5b1759827c3b897c3d98c407b3631e8af32e3dc93c",
+				"dweb:/ipfs/QmPF85Amgbqjk3SNZKsPCsqCw8JfwYEPMnnhvMJUyX58je"
+			]
+		},
 		"@openzeppelin/contracts/math/SafeMath.sol": {
 			"keccak256": "0xcc78a17dd88fa5a2edc60c8489e2f405c0913b377216a5b26b35656b2d0dab52",
 			"license": "MIT",
 			"urls": [
 				"bzz-raw://526dc85e1f9b9b45830e202568d267d93dde7a4fcccf4ad7798dadcd92304d3c",
 				"dweb:/ipfs/QmaoXMB972J3cSDLtBq3xBo4jLwqD2uzXTwujtSPqkYVhR"
+			]
+		},
+		"@openzeppelin/contracts/token/ERC1155/ERC1155.sol": {
+			"keccak256": "0x3fef0eeb248c7109ce0f9adce59543d8b4141b78382d3ec34db33dabdbbc13f9",
+			"license": "MIT",
+			"urls": [
+				"bzz-raw://f704e6539b9db8b7bf08b8a1c1cb2b44519129b5659211ed5af8f2aa5f264a2f",
+				"dweb:/ipfs/QmYRPbn7p8oTEKNUrd7YMMA2J8W6vUeFmCcCMGvyWdZ6UB"
+			]
+		},
+		"@openzeppelin/contracts/token/ERC1155/IERC1155.sol": {
+			"keccak256": "0x61321d2c86346045bf394885ee3afeecc65f9daad2694bc19110967588fd7b5d",
+			"license": "MIT",
+			"urls": [
+				"bzz-raw://1703b877203e0447ede72dcf73f1c4f2089b415bd1c44877904128a64fafed5b",
+				"dweb:/ipfs/QmaZoYDo2FWtKcwCc9zuabU6zri8KV9xJrhU614d93sLid"
+			]
+		},
+		"@openzeppelin/contracts/token/ERC1155/IERC1155MetadataURI.sol": {
+			"keccak256": "0xd918cca1b659f588a6d12d05fd7196179a8b1eac9133d7f77da7ef3133e13256",
+			"license": "MIT",
+			"urls": [
+				"bzz-raw://7c75d578f42e2e2e427b934e6c41cc759be2d0a52155868308e915328c8feb2b",
+				"dweb:/ipfs/QmbFNHtWAoNhe82Hy6yKTePWJRczqzp1APSBfLS9XfAN6e"
+			]
+		},
+		"@openzeppelin/contracts/token/ERC1155/IERC1155Receiver.sol": {
+			"keccak256": "0x2690a9b7f4f7489b8d25a4fc6bffc02ec3971fb41ed6c8b59adef2833bdab07c",
+			"license": "MIT",
+			"urls": [
+				"bzz-raw://8148c99452b6793ac9599abdc8bdaf4eeb47f34590beea8aa01089be14e2990c",
+				"dweb:/ipfs/QmNdenmZ4EDfH9TuBas3pHeGuZvDNo2rsfgUj6ka8vuH37"
 			]
 		},
 		"@openzeppelin/contracts/utils/Address.sol": {
@@ -709,6 +808,14 @@
 				"dweb:/ipfs/QmVzaxJZY51EhagrcNnkxoU6Uq17RhATe7aHvtkC6wUkgK"
 			]
 		},
+		"contracts/EOBNftToken.sol": {
+			"keccak256": "0x8879e8ab7abc17eeaceac80d5c46703e275bd77572059869904ab2b018ec57b5",
+			"license": "MIT",
+			"urls": [
+				"bzz-raw://c985627f0765f2da7530361b3e374bb6ca5420605bdac86638ec27cba43f3d74",
+				"dweb:/ipfs/QmPbsLnuujyDhWotvCR3iBosbYrksJUxrMabtyG8Z41RpC"
+			]
+		},
 		"contracts/EOBToken.sol": {
 			"keccak256": "0x49edf3fc62ed96b0039e6270bdef6224ec05cd313b6cb831802e7edfc2f3dfb0",
 			"urls": [
@@ -717,11 +824,11 @@
 			]
 		},
 		"contracts/MasterChefV2.sol": {
-			"keccak256": "0xac67e664dacb55ed5da1cb3aad026f64168a0f606c9acc171975ac67861504bf",
+			"keccak256": "0xe39301f2f71db703d5d61fa76e5fac47094297ed38998854d39f6c5955657527",
 			"license": "MIT",
 			"urls": [
-				"bzz-raw://c9f6fdba803d49c6284a7c73c17dd0177646900d5f868d9785acb24c564838c3",
-				"dweb:/ipfs/QmdNuRg1vYNi8TF35osVnAe2x8L89oPAjib86UU3D6FBPx"
+				"bzz-raw://d314649aedb180c0c74babbd42b007a27c9a38f4dc7af3d4ee277197ca36ac7c",
+				"dweb:/ipfs/QmR2tznDEbVCs8EacRyDQnGYZx7vx5pH8FwrQMSTCk2Djw"
 			]
 		},
 		"contracts/libs/BEP20.sol": {
@@ -737,6 +844,13 @@
 			"urls": [
 				"bzz-raw://26d39f68d37159c6d2b34fa1ade4b59403c184c822d82534cddf006eab94f343",
 				"dweb:/ipfs/QmXbg49PKbKVJN84ARz99NYLfUtKb6RA5Be9PJ1ndAYWFz"
+			]
+		},
+		"contracts/libs/IDRNG.sol": {
+			"keccak256": "0x7889b02515800e897ba2c21816e484e6d18c0604be28b7840b071dc3ea26e817",
+			"urls": [
+				"bzz-raw://85a24594080e849420c7cdeb8618a84466088dbdc9da6b0d891ab5dac5c6dc7a",
+				"dweb:/ipfs/QmZb3zz6AKUiBTBfwvGCE8NjJ6uqnCYHmDfLAnXdpw2EXk"
 			]
 		},
 		"contracts/libs/SafeBEP20.sol": {

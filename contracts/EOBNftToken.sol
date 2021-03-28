@@ -76,7 +76,6 @@ contract EOBNftToken is ERC1155("https://chom.dev"), Ownable {
     
     function _mintUserSNftBox(address _to, uint256 countryId, uint256 amount) internal {
         uint256 tokenId = 1000000000000000000 + countryId * 1000000000000 + 1;
-        token.transferFrom(_to, address(this), pricePerLandBox * amount);
         _mint(_to, countryId * tokenId, amount, "");
         
         randomBlockNumber[_to][tokenId] = drng.getBlockNumber();

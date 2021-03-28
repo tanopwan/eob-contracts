@@ -824,11 +824,11 @@
 			]
 		},
 		"contracts/EOBNftToken.sol": {
-			"keccak256": "0x07d6cb80f03a333fc720e0dda77f484447fdc72fa08d1fa12ec3e2035f21ba7e",
+			"keccak256": "0x8879e8ab7abc17eeaceac80d5c46703e275bd77572059869904ab2b018ec57b5",
 			"license": "MIT",
 			"urls": [
-				"bzz-raw://d76ec9ed6f16540ea929f86cc4d4bffe45ae150e21db194ecc1e09463caff955",
-				"dweb:/ipfs/QmfGoY5teHDdgHrJ8P6tpuFFFsZ8dFffPohYdgem6g3KWX"
+				"bzz-raw://c985627f0765f2da7530361b3e374bb6ca5420605bdac86638ec27cba43f3d74",
+				"dweb:/ipfs/QmPbsLnuujyDhWotvCR3iBosbYrksJUxrMabtyG8Z41RpC"
 			]
 		},
 		"contracts/EOBToken.sol": {
