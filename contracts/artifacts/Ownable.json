@@ -45,73 +45,66 @@
 		},
 		"gasEstimates": null,
 		"methodIdentifiers": {
-			"fillRandom()": "b8e0ea42",
-			"getBlockNumber()": "42cbb15c",
-			"getRandom(uint256,uint128)": "82bd5615",
-			"nextRandom()": "47d28dc8"
+			"owner()": "8da5cb5b",
+			"renounceOwnership()": "715018a6",
+			"transferOwnership(address)": "f2fde38b"
 		}
 	},
 	"abi": [
 		{
 			"inputs": [],
-			"name": "fillRandom",
-			"outputs": [
+			"stateMutability": "nonpayable",
+			"type": "constructor"
+		},
+		{
+			"anonymous": false,
+			"inputs": [
 				{
-					"internalType": "uint128",
-					"name": "",
-					"type": "uint128"
+					"indexed": true,
+					"internalType": "address",
+					"name": "previousOwner",
+					"type": "address"
+				},
+				{
+					"indexed": true,
+					"internalType": "address",
+					"name": "newOwner",
+					"type": "address"
 				}
 			],
-			"stateMutability": "nonpayable",
+			"name": "OwnershipTransferred",
+			"type": "event"
+		},
+		{
+			"inputs": [],
+			"name": "owner",
+			"outputs": [
+				{
+					"internalType": "address",
+					"name": "",
+					"type": "address"
+				}
+			],
+			"stateMutability": "view",
 			"type": "function"
 		},
 		{
 			"inputs": [],
-			"name": "getBlockNumber",
-			"outputs": [
-				{
-					"internalType": "uint256",
-					"name": "",
-					"type": "uint256"
-				}
-			],
-			"stateMutability": "view",
+			"name": "renounceOwnership",
+			"outputs": [],
+			"stateMutability": "nonpayable",
 			"type": "function"
 		},
 		{
 			"inputs": [
 				{
-					"internalType": "uint256",
-					"name": "blockNumber",
-					"type": "uint256"
-				},
-				{
-					"internalType": "uint128",
-					"name": "seed",
-					"type": "uint128"
+					"internalType": "address",
+					"name": "newOwner",
+					"type": "address"
 				}
 			],
-			"name": "getRandom",
-			"outputs": [
-				{
-					"internalType": "uint128",
-					"name": "",
-					"type": "uint128"
-				}
-			],
-			"stateMutability": "view",
-			"type": "function"
-		},
-		{
-			"inputs": [],
-			"name": "nextRandom",
-			"outputs": [
-				{
-					"internalType": "uint128",
-					"name": "",
-					"type": "uint128"
-				}
-			],
+			"name": "transferOwnership",
+			"outputs": [],
 			"stateMutability": "nonpayable",
 			"type": "function"
 		}

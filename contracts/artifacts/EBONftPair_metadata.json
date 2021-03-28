@@ -6,7 +6,18 @@
 	"output": {
 		"abi": [
 			{
-				"inputs": [],
+				"inputs": [
+					{
+						"internalType": "string",
+						"name": "_name",
+						"type": "string"
+					},
+					{
+						"internalType": "string",
+						"name": "_symbol",
+						"type": "string"
+					}
+				],
 				"stateMutability": "nonpayable",
 				"type": "constructor"
 			},
@@ -1091,7 +1102,7 @@
 	},
 	"settings": {
 		"compilationTarget": {
-			"contracts/EOBToken.sol": "EOBToken"
+			"contracts/EOBNftPair.sol": "EBONftPair"
 		},
 		"evmVersion": "istanbul",
 		"libraries": {},
@@ -1099,7 +1110,7 @@
 			"bytecodeHash": "ipfs"
 		},
 		"optimizer": {
-			"enabled": false,
+			"enabled": true,
 			"runs": 200
 		},
 		"remappings": []
@@ -1137,11 +1148,11 @@
 				"dweb:/ipfs/QmfBrGtQP7rZEqEg6Wz6jh2N2Kukpj1z5v3CGWmAqrzm96"
 			]
 		},
-		"contracts/EOBToken.sol": {
-			"keccak256": "0x49edf3fc62ed96b0039e6270bdef6224ec05cd313b6cb831802e7edfc2f3dfb0",
+		"contracts/EOBNftPair.sol": {
+			"keccak256": "0x8e08e1f29b4d805c88c5f5f181f1c09ab2d876ca407bd18cd6228fb907638241",
 			"urls": [
-				"bzz-raw://da472794a1de3100d775788677cde577564a0902120ef9adc29a5772c08812ec",
-				"dweb:/ipfs/QmYJXX7WJctP27qhSbx22NP7WixSRzjnYRd5bWp3t7dwr8"
+				"bzz-raw://e808bcbc4710b25a813bda42a64e1e99c528709188fdb49867db91b803055017",
+				"dweb:/ipfs/QmNfxhNQaicJ3vaDA1ByrbAdSHAHZzQYocqnSDjewxdk6t"
 			]
 		},
 		"contracts/libs/BEP20.sol": {

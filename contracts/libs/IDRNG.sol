@@ -24,9 +24,9 @@ You can see the example of doing this in zerodevfee-contracts.
 
 interface IDRNG {
 	function nextRandom() external returns (uint128);
-	function fillRandom() external;
+	function fillRandom() external returns (uint128);
 	function getBlockNumber() external view returns (uint256);
 	
 	// Seed is sent from external contract which is a random number generated on requesting random
-	function getRandom(uint256 blockNumber, uint128 seed) external view returns (uint256);
+	function getRandom(uint256 blockNumber, uint128 seed) external view returns (uint128);
 }

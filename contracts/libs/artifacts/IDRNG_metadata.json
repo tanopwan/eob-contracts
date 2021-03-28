@@ -8,7 +8,13 @@
 			{
 				"inputs": [],
 				"name": "fillRandom",
-				"outputs": [],
+				"outputs": [
+					{
+						"internalType": "uint128",
+						"name": "",
+						"type": "uint128"
+					}
+				],
 				"stateMutability": "nonpayable",
 				"type": "function"
 			},
@@ -41,9 +47,9 @@
 				"name": "getRandom",
 				"outputs": [
 					{
-						"internalType": "uint256",
+						"internalType": "uint128",
 						"name": "",
-						"type": "uint256"
+						"type": "uint128"
 					}
 				],
 				"stateMutability": "view",
@@ -91,10 +97,10 @@
 	},
 	"sources": {
 		"contracts/libs/IDRNG.sol": {
-			"keccak256": "0x5fef739cb5ea40d54a892ee80c86f3224822d6a600583997a55df26e8d0ca752",
+			"keccak256": "0x7889b02515800e897ba2c21816e484e6d18c0604be28b7840b071dc3ea26e817",
 			"urls": [
-				"bzz-raw://02e776fbfb6cf7d32444e05c71b3332c75133d4f517e7084c235b30a55261208",
-				"dweb:/ipfs/QmZLtm2zR4P33ipte7Ym6i9HiShAVLS2ptQqAnSj9SJsuc"
+				"bzz-raw://85a24594080e849420c7cdeb8618a84466088dbdc9da6b0d891ab5dac5c6dc7a",
+				"dweb:/ipfs/QmZb3zz6AKUiBTBfwvGCE8NjJ6uqnCYHmDfLAnXdpw2EXk"
 			]
 		}
 	},
