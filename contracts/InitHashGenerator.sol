@@ -3,7 +3,7 @@ import './PancakePair.sol';
 
 contract InitHashGenerator {
     function getInitHash() public pure returns(bytes32){
-        bytes memory bytecode = type(UniswapV2Pair).creationCode;
+        bytes memory bytecode = type(PancakePair).creationCode;
         return keccak256(abi.encodePacked(bytecode));
     }
 }
