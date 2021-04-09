@@ -1,5 +1,5 @@
 pragma solidity =0.5.16;
-import './UniswapV2Pair.sol';
+import './PancakePair.sol';
 
 contract InitHashGenerator {
     function getInitHash() public pure returns(bytes32){
