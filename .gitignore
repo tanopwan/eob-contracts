@@ -1,7 +1,8 @@
 /node_modules/
 /.idea/
 /secrets.json
-/scripts/
+# /scripts/
+/artifacts/
 /migrations/
 /build/
 /test/
