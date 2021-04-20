@@ -11,6 +11,11 @@ module.exports = {
       blockGasLimit: 24900000,
       allowUnlimitedContractSize: true,
     },
+    hardhat: {
+      gas: 24900000,
+      blockGasLimit: 24900000,
+      allowUnlimitedContractSize: true,
+    }
   },
   solidity: {
     compilers: [

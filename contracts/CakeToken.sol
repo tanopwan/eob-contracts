@@ -1,125 +1,13 @@
-pragma solidity 0.6.12;
 
-import "./libs/BEP20.sol";
+import "@pancakeswap/pancake-swap-lib/contracts/token/BEP20/BEP20.sol";
 
-// EOBToken with Governance.
-contract EOBToken is BEP20('Estate-Onblock', 'EOB') {
-    event EOBMinted(address indexed to, uint256 indexed firstMintId, uint256 amount);
-    event EOBBurned(address indexed burner, uint256 amount, uint256 output);
-    
-    address public adminAddress;
-    
-    constructor() public {
-        adminAddress = msg.sender;
-    }
-    
-    struct AllowMintingData {
-        bool allowed;
-        uint256 timelock;
-    }
-    
-    uint256 public allowMintingTimelock = 0; // in seconds, will be set later
-    
-    mapping(address => AllowMintingData) public allowMinting;
-    
-    modifier onlyAdmin {
-        require(msg.sender == adminAddress, "Only admin");
-        _;
-    }
-    
-    struct mintingProfileStruct {
-        uint256 totalMint;
-        uint256 firstMintId;
-        uint256 firstMintTimestamp;
-    }
-    
-    mapping(address => mintingProfileStruct) public mintingProfile;
-    uint256 public firstMintIdCounter = 0;
-    uint256 public mintingMultiplier = 100;
-    uint256 public adminShareDivider = 4;
-    uint256 public mintingTotalSupply = 1e24;
-    uint256 public mintingTotalCurrent = 0;
-    
-    function setMintingMultiplier(uint256 _multiplier) public onlyAdmin {
-        require(_multiplier < mintingMultiplier, "Can only increase price");
-        mintingMultiplier = _multiplier;
-    }
-    
-    function setAdminShareDivider(uint256 _divider) public onlyAdmin {
-        require(_divider > adminShareDivider, "Can only decrease admin share");
-        adminShareDivider = _divider;
-    }
-    
-    function setMintingTotalSupply(uint256 _supply) public onlyAdmin {
-        require(_supply >= mintingTotalCurrent, "Not enough supply");
-        mintingTotalSupply = _supply;
-    }
-    
-    function setAllowMintingTimelock(uint256 _duration) public onlyAdmin {
-        require(_duration > allowMintingTimelock, "Must be longer lock");
-        allowMintingTimelock = _duration;
-    }
-    
-    function getRealTotalSupply() public view returns (uint256) {
-        return totalSupply() - balanceOf(0x000000000000000000000000000000000000dEaD);
-    }
-    
-    function setAllowMinting(address _address, bool _allowed) public onlyAdmin {
-        if (_allowed) {
-            if (allowMinting[_address].timelock > 0 && block.timestamp > allowMinting[_address].timelock) {
-                allowMinting[_address].allowed = true;
-            } else {
-                allowMinting[_address].timelock = block.timestamp + allowMintingTimelock;
-            }
-        } else {
-            allowMinting[_address].allowed = false;
-            allowMinting[_address].timelock = 0;
-        }
-    }
-    
-    function setAdmin(address _adminAddress) public onlyAdmin {
-        adminAddress = _adminAddress;
-    }
-    
-    modifier onlyAllowedMinting(address _address) {
-        require(allowMinting[_address].allowed, "Cannot mint");
-        _;
-    }
-    
-    function mymint(address _to, uint256 _amount) public {
-        
-    }
-
-    /// @notice Creates `_amount` token to `_to`. Must only be called by the app that is allowed minting Ex: MasterChef.
-    function mint(address _to, uint256 _amount) public {
+// CakeToken with Governance.
+contract CakeToken is BEP20('PancakeSwap Token', 'Cake') {
+    /// @notice Creates `_amount` token to `_to`. Must only be called by the owner (MasterChef).
+    function mint(address _to, uint256 _amount) public onlyOwner {
         _mint(_to, _amount);
         _moveDelegates(address(0), _delegates[_to], _amount);
     }
-    
-	// Minting mechanism to be used in presale
-	function mintUserTo(address _to) public payable {
-	    uint256 _amount = msg.value * mintingMultiplier;
-		_mint(_to, _amount);
-		_moveDelegates(address(0), _delegates[_to], _amount);
-		
-		mintingProfile[_to].totalMint += _amount;
-		mintingTotalCurrent += _amount;
-		
-		require(mintingTotalCurrent <= mintingTotalSupply, "Out of supply");
-		
-		if (mintingProfile[_to].firstMintId == 0) {
-		    firstMintIdCounter++;
-		    mintingProfile[_to].firstMintId = firstMintIdCounter;
-		    mintingProfile[_to].firstMintTimestamp = block.timestamp;
-		}
-		
-		payable(adminAddress).transfer(msg.value / adminShareDivider);
-		emit EOBMinted(_to, mintingProfile[_to].firstMintId, _amount);
-	}
-	
-	function mintUser() public payable {
-	    mintUserTo(msg.sender);
-	}
 
     // Copied and modified from YAM code:
     // https://github.com/yam-finance/yam-protocol/blob/master/contracts/token/YAMGovernanceStorage.sol
@@ -223,9 +111,9 @@ contract EOBToken is BEP20('Estate-Onblock', 'EOB') {
         );
 
         address signatory = ecrecover(digest, v, r, s);
-        require(signatory != address(0), "EOB::delegateBySig: invalid signature");
-        require(nonce == nonces[signatory]++, "EOB::delegateBySig: invalid nonce");
-        require(now <= expiry, "EOB::delegateBySig: signature expired");
+        require(signatory != address(0), "CAKE::delegateBySig: invalid signature");
+        require(nonce == nonces[signatory]++, "CAKE::delegateBySig: invalid nonce");
+        require(now <= expiry, "CAKE::delegateBySig: signature expired");
         return _delegate(signatory, delegatee);
     }
 
@@ -255,7 +143,7 @@ contract EOBToken is BEP20('Estate-Onblock', 'EOB') {
         view
         returns (uint256)
     {
-        require(blockNumber < block.number, "EOB::getPriorVotes: not yet determined");
+        require(blockNumber < block.number, "CAKE::getPriorVotes: not yet determined");
 
         uint32 nCheckpoints = numCheckpoints[account];
         if (nCheckpoints == 0) {
@@ -292,7 +180,7 @@ contract EOBToken is BEP20('Estate-Onblock', 'EOB') {
         internal
     {
         address currentDelegate = _delegates[delegator];
-        uint256 delegatorBalance = balanceOf(delegator); // balance of underlying EOBs (not scaled);
+        uint256 delegatorBalance = balanceOf(delegator); // balance of underlying CAKEs (not scaled);
         _delegates[delegator] = delegatee;
 
         emit DelegateChanged(delegator, currentDelegate, delegatee);
@@ -328,7 +216,7 @@ contract EOBToken is BEP20('Estate-Onblock', 'EOB') {
     )
         internal
     {
-        uint32 blockNumber = safe32(block.number, "EOB::_writeCheckpoint: block number exceeds 32 bits");
+        uint32 blockNumber = safe32(block.number, "CAKE::_writeCheckpoint: block number exceeds 32 bits");
 
         if (nCheckpoints > 0 && checkpoints[delegatee][nCheckpoints - 1].fromBlock == blockNumber) {
             checkpoints[delegatee][nCheckpoints - 1].votes = newVotes;
