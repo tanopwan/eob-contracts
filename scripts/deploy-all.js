@@ -21,6 +21,7 @@ async function main() {
   const cakeToken = await CakeToken.deploy();
   await cakeToken.deployed();
   console.log("CakeToken deployed to:", cakeToken.address);
+  await cakeToken["mint(address,uint256)"](owner.address, ethers.utils.parseEther("100000.0"))
 
   const SyrupBar = await hre.ethers.getContractFactory("SyrupBar");
   const syrupBar = await SyrupBar.deploy(cakeToken.address);
@@ -62,19 +63,35 @@ async function main() {
   await pancakeRouter.deployed();
   console.log("PancakeRouter deployed to:", pancakeRouter.address);
 
-  console.log(await eobToken.balanceOf(owner.address));
   await eobToken["mint(uint256)"](ethers.BigNumber.from("100000000000000000000"));
 	await eobToken["transfer(address,uint256)"](owner.address, ethers.BigNumber.from("100000000000000000000"));
-	console.log(await eobToken.balanceOf(owner.address));
-  await eobToken.approve(pancakeRouter.address, ethers.utils.parseEther("100.0"))
+
+  await pancakeFactory.createPair(wBNB.address, cakeToken.address);
+  const cakePairAddress = await pancakeFactory.getPair(wBNB.address, cakeToken.address);
+  const PancakePair = await ethers.getContractFactory("PancakePair");
+  const cakePair = await PancakePair.attach(cakePairAddress)
+  console.log("cakePair:", cakePairAddress);
 
   await pancakeFactory.createPair(wBNB.address, eobToken.address);
   const pairAddress = await pancakeFactory.getPair(wBNB.address, eobToken.address);
-  const PancakePair = await ethers.getContractFactory("PancakePair");
   const pair = await PancakePair.attach(pairAddress)
   console.log("Pair:", pairAddress);
 
   const _deadline = Date.now() + 1200;
+
+  await eobToken.approve(pancakeRouter.address, ethers.utils.parseEther("10000000000.0"))
+  await cakeToken.approve(pancakeRouter.address, ethers.utils.parseEther("10000000000.0"))
+
+  await pancakeRouter.addLiquidityETH(
+    cakeToken.address,
+    ethers.utils.parseEther("100000.0"),
+    ethers.utils.parseEther("90000.0"),
+    ethers.utils.parseEther("1.0"),
+    owner.address,
+    _deadline,
+    {value: ethers.utils.parseEther("1.0")},
+  )
+  console.log("EOB-BNB LP:", (await cakePair.balanceOf(owner.address)).toString());
 
   await pancakeRouter.addLiquidityETH(
     eobToken.address,
@@ -85,11 +102,11 @@ async function main() {
     _deadline,
     {value: ethers.utils.parseEther("1.0")},
   )
-  console.log("LP:", await pair.balanceOf(owner.address));
+  console.log("Cake-BNB LP:", (await pair.balanceOf(owner.address)).toString());
 
-  console.log("Pool Length:", await masterChef.poolLength());
   await masterChef.add(1, pairAddress, false);
-  console.log("Pool Length:", await masterChef.poolLength());
+  await masterChef.add(2, cakePairAddress, false);
+  console.log("Pool Length:", (await masterChef.poolLength()).toString());
 }
 
 // We recommend this pattern to be able to use async/await everywhere
