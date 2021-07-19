@@ -63,8 +63,8 @@ async function main() {
   await pancakeRouter.deployed();
   console.log("PancakeRouter deployed to:", pancakeRouter.address);
 
-  await eobToken["mint(uint256)"](ethers.BigNumber.from("100000000000000000000"));
-	await eobToken["transfer(address,uint256)"](owner.address, ethers.BigNumber.from("100000000000000000000"));
+  await eobToken["mint(uint256)"](ethers.utils.parseEther("10000.0"));
+	await eobToken["transfer(address,uint256)"](owner.address, ethers.utils.parseEther("10000.0"));
 
   await pancakeFactory.createPair(wBNB.address, cakeToken.address);
   const cakePairAddress = await pancakeFactory.getPair(wBNB.address, cakeToken.address);
@@ -81,6 +81,7 @@ async function main() {
 
   await eobToken.approve(pancakeRouter.address, ethers.utils.parseEther("10000000000.0"))
   await cakeToken.approve(pancakeRouter.address, ethers.utils.parseEther("10000000000.0"))
+  await pair.approve(pancakeRouter.address, ethers.utils.parseEther("10000000000.0"));
 
   await pancakeRouter.addLiquidityETH(
     cakeToken.address,
@@ -91,22 +92,24 @@ async function main() {
     _deadline,
     {value: ethers.utils.parseEther("1.0")},
   )
-  console.log("EOB-BNB LP:", (await cakePair.balanceOf(owner.address)).toString());
+  console.log("Cake-BNB LP:", (await cakePair.balanceOf(owner.address)).toString());
 
+  console.log((await eobToken.balanceOf(owner.address)).div(ethers.utils.parseEther("1.0")).toString());
   await pancakeRouter.addLiquidityETH(
     eobToken.address,
-    ethers.BigNumber.from("100000000000000000000"),
-    ethers.BigNumber.from("950000000000000000000"),
-    ethers.BigNumber.from("1000000000000000000"),
+    ethers.utils.parseEther("10000.0"),
+    ethers.utils.parseEther("9000.0"),
+    ethers.utils.parseEther("1.0"),
     owner.address,
     _deadline,
     {value: ethers.utils.parseEther("1.0")},
   )
-  console.log("Cake-BNB LP:", (await pair.balanceOf(owner.address)).toString());
+  console.log("EOB-BNB LP:", (await pair.balanceOf(owner.address)).toString());
 
   await masterChef.add(1, pairAddress, false);
   await masterChef.add(2, cakePairAddress, false);
   console.log("Pool Length:", (await masterChef.poolLength()).toString());
+  console.log("owner address:", owner.address);
 }
 
 // We recommend this pattern to be able to use async/await everywhere
